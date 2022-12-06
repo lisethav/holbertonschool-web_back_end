@@ -1,0 +1,20 @@
+'use strict';
+const sinon = require('sinon');
+const chai = require('chai');
+
+const sendPaymentRequestToApi = require('./4-payment.js');
+const Utils = require('./utils.js');
+
+describe('sendPaymentRequestToApi function', () => {
+  const spyConsole = sinon.spy(console, 'log');
+
+  it('validate the usage of the Utils function', () => {
+    const stubUtils = sinon.stub(Utils, 'calculateNumber');
+    stubUtils.withArgs('SUM', 100, 20).returns(10);
+    sendPaymentRequestToApi(100, 20);
+    chai.expect(spyConsole.calledWith('The total is: 10')).to.be.true;
+    chai.expect(spyConsole.calledOnce).to.be.true;
+    spyConsole.restore();
+    stubUtils.restore()
+  });
+});
